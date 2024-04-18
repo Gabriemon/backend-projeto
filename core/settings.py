@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,7 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f4gfu@(f!uzp1h(x#u^k$3xsa0a2k-syvhvi$zb3s#!@^3^blb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = os.environ.get('Production_enviroment', '') != 'true'
+if not DEBUG:
+    DATABASES = { "default": dj_database_url.parse(
+        os.environ.get('DATABASE_URL'))}
+else:  
+    DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }}
 
 
 ALLOWED_HOSTS = [
@@ -43,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jogos'
 ]
 
 MIDDLEWARE = [
